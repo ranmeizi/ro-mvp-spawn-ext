@@ -1,0 +1,20 @@
+{
+    "Alive": {
+        "message": "Alive",
+        "description": ""
+    },
+    "Dead": {
+        "message": "Dead",
+        "description": ""
+    },
+    "Maybe": {
+        "message": "Maybe",
+        "description": ""
+    },
+    "killTemplate": {
+        "message": "killed by {0} at {1}"
+    },
+    "maybeTemplate": {
+        "message": "killed by {0} at {1}, maybe spawn at {2} ~ {3}"
+    }
+}

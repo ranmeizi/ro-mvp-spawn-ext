@@ -1,0 +1,20 @@
+{
+  "Alive": {
+    "message": "存活",
+    "description": ""
+  },
+  "Dead": {
+    "message": "死亡",
+    "description": ""
+  },
+  "Maybe": {
+    "message": "可能",
+    "description": ""
+  },
+  "killTemplate": {
+    "message": "死于 {1} 击杀者 {0}"
+  },
+  "maybeTemplate": {
+    "message": "死于 {1} 击杀者 {0}, 可能刷新于 {2} ~ {3}"
+  }
+}

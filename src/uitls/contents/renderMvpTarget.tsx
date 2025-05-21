@@ -1,0 +1,126 @@
+/**
+ * config 不变
+ * el 结构 不变
+ * 可变的是 实时拉取的 mvp death note
+ */
+
+import type { MvpDeathNote } from "~src/datas/mvp";
+import MvpConfig, { EnumMvpIndex } from '~src/datas/mvp'
+import { tileEls } from "./getMapTile";
+import dayjs from "~node_modules/dayjs";
+
+// 测试数据
+const test_note: MvpDeathNote[] = [
+    { id: EnumMvpIndex.Eddga, death_time: dayjs().subtract(23, 'minute').valueOf(), killer: 'GM01' },
+    { id: EnumMvpIndex.Baphomet, death_time: dayjs().subtract(130, 'minute').valueOf(), killer: 'GM01' }
+]
+
+function getMvpState(time_lower: number, time_upper: number, death_time: number): 'alive' | 'dead' | 'maybe' {
+    // 如果 没有 death_time 或者 death_time + time_upper < now 那就一定活着
+    if (!death_time || death_time + time_upper < dayjs().valueOf()) {
+        return 'alive'
+    }
+
+    // 如果 death_time + time_lower> now 那就一定死了
+    if (death_time + time_lower > dayjs().valueOf()) {
+        return 'dead'
+    }
+
+    return 'maybe'
+}
+
+export function renderMvpTarget(death_note: MvpDeathNote[] = test_note) {
+    // 循环 MvpConfig 把 mvp 
+    for (let [id, conf] of Object.entries(MvpConfig)) {
+        const maps = conf.respawn_map
+        const name = conf.name_EN
+        const url = conf.imgUrl
+
+        for (let [map, mapConf] of Object.entries(maps)) {
+            const container = tileEls[map]
+            const { time_lower, time_upper } = mapConf
+
+            const { death_time, killer } = death_note.find(item => item.id === id) || {}
+
+            // A. 处理浮动图标
+
+            // 用 time_lower, time_upper 和 death_time 值计算一下 mvp 是否存活
+            const state = getMvpState(time_lower, time_upper, death_time)
+
+            console.log('state', state)
+
+            const wrapEl = container.querySelector('.mvp-icon')
+            if (wrapEl) {
+                container.removeChild(wrapEl)
+            }
+
+            const newEl = document.createElement('div')
+            newEl.className = `mvp-icon ${state}`
+
+            const img = document.createElement('img')
+            img.src = url
+
+            newEl.appendChild(img)
+
+            container.appendChild(newEl)
+
+            // B. 处理表格 td
+            const tds = container.querySelectorAll('table .tt-row .mob-name')
+
+            for (let i = 0; i < tds.length; i++) {
+                const td = tds[i]
+                const origin = (td.childNodes[0].textContent).replaceAll(' ', '')
+
+                if (origin !== name) {
+                    continue;
+                }
+
+                const tag = td.childNodes?.[1]
+
+                if (tag) {
+                    td.removeChild(tag)
+                }
+
+
+
+                switch (state) {
+                    case "alive":
+                        {
+                            // 标alive
+                            const t = document.createElement('i')
+                            t.innerText = `(${chrome.i18n.getMessage('Alive')})`
+                            t.style.color = 'green'
+                            td.appendChild(t)
+                        } break;
+                    case "dead":
+                        {
+                            // 标 dead
+                            const t = document.createElement('i')
+
+                            t.innerText = `(${chrome.i18n.getMessage('killTemplate')
+                                .replace('{0}', killer)
+                                .replace('{1}', dayjs(death_time).format('YYYY-MM-DD HH:mm:ss'))})`
+                            t.style.color = 'red'
+                            td.appendChild(t)
+                        } break;
+
+                    case "maybe":
+                        {
+                            // 标 maybe
+                            const t = document.createElement('i')
+                            t.innerText = `(${chrome.i18n.getMessage('maybeTemplate')
+                                .replace('{0}', killer)
+                                .replace('{1}', dayjs(death_time).format('YYYY-MM-DD HH:mm:ss'))
+                                .replace('{2}', dayjs(death_time + time_lower).format('YYYY-MM-DD HH:mm:ss'))
+                                .replace('{3}', dayjs(death_time + time_upper).format('YYYY-MM-DD HH:mm:ss'))
+                                })`
+                            t.style.color = 'orange'
+                            td.appendChild(t)
+                        } break;
+
+                }
+            }
+        }
+    }
+
+}
