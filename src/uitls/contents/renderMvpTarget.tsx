@@ -8,6 +8,9 @@ import type { MvpDeathNote } from "~src/datas/mvp";
 import MvpConfig, { EnumMvpIndex } from '~src/datas/mvp'
 import { tileEls } from "./getMapTile";
 import dayjs from "~node_modules/dayjs";
+import duration from 'dayjs/plugin/duration'
+
+dayjs.extend(duration)
 
 // 测试数据
 const test_note: MvpDeathNote[] = [
@@ -33,7 +36,7 @@ export function renderMvpTarget(death_note: MvpDeathNote[] = test_note) {
     // 循环 MvpConfig 把 mvp 
     for (let [id, conf] of Object.entries(MvpConfig)) {
         const maps = conf.respawn_map
-        const name = conf.name_EN
+        const name = conf.name_map
         const url = conf.imgUrl
 
         for (let [map, mapConf] of Object.entries(maps)) {
@@ -46,8 +49,6 @@ export function renderMvpTarget(death_note: MvpDeathNote[] = test_note) {
 
             // 用 time_lower, time_upper 和 death_time 值计算一下 mvp 是否存活
             const state = getMvpState(time_lower, time_upper, death_time)
-
-            console.log('state', state)
 
             const wrapEl = container.querySelector('.mvp-icon')
             if (wrapEl) {
@@ -67,13 +68,17 @@ export function renderMvpTarget(death_note: MvpDeathNote[] = test_note) {
             // B. 处理表格 td
             const tds = container.querySelectorAll('table .tt-row .mob-name')
 
+            let hasMvp = false // 没有MVP 如果没有，给他table加一行
+
             for (let i = 0; i < tds.length; i++) {
                 const td = tds[i]
-                const origin = (td.childNodes[0].textContent).replaceAll(' ', '')
+                const origin = (td.childNodes[0].textContent)
 
                 if (origin !== name) {
                     continue;
                 }
+
+                hasMvp = true
 
                 const tag = td.childNodes?.[1]
 
@@ -119,8 +124,36 @@ export function renderMvpTarget(death_note: MvpDeathNote[] = test_note) {
                         } break;
 
                 }
+
+            }
+
+            if (!hasMvp) {
+                // 加一行 刷新慢一点而已 下次调用给加上 mvp信息
+                const tbody = container.querySelector('table>tbody')
+                const row = document.createElement('tr')
+
+                const len = tbody.querySelectorAll('.tt-row').length
+                row.className = `tt-row ${len % 2 === 0 ? '' : 'even'}`
+
+                const nameTd = document.createElement('td')
+                nameTd.className = 'mob-name'
+                nameTd.innerText = name
+
+                const numTd = document.createElement('td')
+                numTd.innerText = '1'
+
+                const timingTd = document.createElement('td')
+
+                timingTd.innerText = `${dayjs.duration(time_lower).asMinutes()}min ~ ${dayjs.duration(time_upper).asMinutes()}min`
+
+                row.appendChild(nameTd)
+                row.appendChild(numTd)
+                row.appendChild(timingTd)
+
+                tbody.appendChild(row)
             }
         }
     }
 
 }
+

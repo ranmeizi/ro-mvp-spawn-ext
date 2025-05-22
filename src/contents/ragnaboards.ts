@@ -1,6 +1,6 @@
 import type { PlasmoCSConfig, PlasmoGetStyle } from "plasmo"
-import { getAllMapRelateContainer, getMapTile } from "./uitls/contents/getMapTile"
-import { renderMvpTarget } from "./uitls/contents/renderMvpTarget"
+import { getAllMapRelateContainer, getMapTile } from "../uitls/contents/getMapTile"
+import { renderMvpTarget } from "../uitls/contents/renderMvpTarget"
 import injectCss from "data-text:~inject.style.css"
 import { useEffect } from "~node_modules/@types/react"
 
@@ -87,17 +87,22 @@ export const config: PlasmoCSConfig = {
   all_frames: true,
 }
 
+// 注入css
 inject()
 
+// 初始化 dom 引用
 getAllMapRelateContainer()
 
-
+// 首次渲染
 renderMvpTarget()
 
-
-
-const CustomButton = () => {
-  return <button>Custom button</button>
+// 模拟多次渲染
+function test_muti_render() {
+  setInterval(() => {
+    renderMvpTarget()
+  }, 1000 * 10);
 }
 
-export default CustomButton
+test_muti_render()
+
+// 与 background 建立消息通道

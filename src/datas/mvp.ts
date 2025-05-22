@@ -25,6 +25,8 @@ type MvpConfig = {
     id: string
     name_EN: string
     name_CN: string
+    name_map: string // map 页上的名字
+    name_momo: string // discord 服务器上的名字
     imgUrl: string // 图片
     credibility: boolean,
     respawn_map: Record<string, {
@@ -56,6 +58,8 @@ const config: Record<EnumMvpIndex, MvpConfig> = {
         id: EnumMvpIndex.AmonRa,
         name_EN: 'AmonRa',
         name_CN: '古埃及王',
+        name_map: 'Amon Ra',
+        name_momo: 'AmonRa',
         imgUrl: 'https://file5s.ratemyserver.net/mobs/1511.gif',
         credibility: false, // 未和gm确认
         respawn_map: {
@@ -67,6 +71,8 @@ const config: Record<EnumMvpIndex, MvpConfig> = {
         id: EnumMvpIndex.Baphomet,
         name_EN: 'Baphomet',
         name_CN: '巴风特',
+        name_map: 'Baphomet',
+        name_momo: 'Baphomet',
         imgUrl: 'https://file5s.ratemyserver.net/mobs/1039.gif',
         credibility: true,
         respawn_map: {
@@ -81,6 +87,8 @@ const config: Record<EnumMvpIndex, MvpConfig> = {
         id: EnumMvpIndex.DarkLord,
         name_EN: 'DarkLord',
         name_CN: '黑暗领主',
+        name_map: 'Dark Lord',
+        name_momo: 'DarkLord',
         imgUrl: 'https://file5s.ratemyserver.net/mobs/1272.gif',
         credibility: true,
         respawn_map: {
@@ -95,6 +103,8 @@ const config: Record<EnumMvpIndex, MvpConfig> = {
         id: EnumMvpIndex.Doppelganger,
         name_EN: 'Doppelganger',
         name_CN: '死灵',
+        name_map: 'Doppelganger',
+        name_momo: 'Doppelganger',
         imgUrl: 'https://file5s.ratemyserver.net/mobs/1046.gif',
         credibility: true,
         respawn_map: {
@@ -109,6 +119,8 @@ const config: Record<EnumMvpIndex, MvpConfig> = {
         id: EnumMvpIndex.Dracula,
         name_EN: 'Dracula',
         name_CN: '德古拉男爵',
+        name_map: 'Dracula',
+        name_momo: 'Dracula',
         imgUrl: 'https://file5s.ratemyserver.net/mobs/1389.gif',
         credibility: false, // 用的pre re数据
         respawn_map: {
@@ -120,6 +132,8 @@ const config: Record<EnumMvpIndex, MvpConfig> = {
         id: EnumMvpIndex.Drake,
         name_EN: 'Drake',
         name_CN: '海盗船长',
+        name_map: 'Drake',
+        name_momo: 'Drake',
         imgUrl: 'https://file5s.ratemyserver.net/mobs/1112.gif',
         credibility: true,
         respawn_map: {
@@ -134,6 +148,8 @@ const config: Record<EnumMvpIndex, MvpConfig> = {
         id: EnumMvpIndex.Eddga,
         name_EN: 'Eddga',
         name_CN: '虎王',
+        name_map: 'Eddga',
+        name_momo: 'Eddga',
         imgUrl: 'https://file5s.ratemyserver.net/mobs/1115.gif',
         credibility: true,
         respawn_map: {
@@ -148,6 +164,8 @@ const config: Record<EnumMvpIndex, MvpConfig> = {
         id: EnumMvpIndex.Garm,
         name_EN: 'Garm',
         name_CN: '卡仑',
+        name_map: 'Garm',
+        name_momo: 'Garm',
         imgUrl: 'https://file5s.ratemyserver.net/mobs/1252.gif',
         credibility: true,
         respawn_map: {
@@ -162,6 +180,8 @@ const config: Record<EnumMvpIndex, MvpConfig> = {
         id: EnumMvpIndex.GoldenThiefBug,
         name_EN: 'GoldenThiefBug',
         name_CN: '卡仑',
+        name_map: 'Golden Thief Bug',
+        name_momo: 'GoldenThiefBug',
         imgUrl: 'https://file5s.ratemyserver.net/mobs/1086.gif',
         credibility: true,
         respawn_map: {
@@ -176,6 +196,8 @@ const config: Record<EnumMvpIndex, MvpConfig> = {
         id: EnumMvpIndex.KnightOfWindstorm,
         name_EN: 'KnightOfWindstorm',
         name_CN: ' 冰暴骑士',
+        name_map: 'Knight of Windstorm',
+        name_momo: 'KnightOfWindstorm',
         imgUrl: 'https://file5s.ratemyserver.net/mobs/1251.gif',
         credibility: true,
         respawn_map: {
@@ -190,6 +212,8 @@ const config: Record<EnumMvpIndex, MvpConfig> = {
         id: EnumMvpIndex.Maya,
         name_EN: 'Maya',
         name_CN: '蚁后',
+        name_map: 'Maya',
+        name_momo: 'Maya',
         imgUrl: 'https://file5s.ratemyserver.net/mobs/1147.gif',
         credibility: true,
         respawn_map: {
@@ -204,6 +228,8 @@ const config: Record<EnumMvpIndex, MvpConfig> = {
         id: EnumMvpIndex.Mistress,
         name_EN: 'Mistress',
         name_CN: '蜂后',
+        name_map: 'Mistress',
+        name_momo: 'Mistress',
         imgUrl: 'https://file5s.ratemyserver.net/mobs/1059.gif',
         credibility: false,
         respawn_map: {
@@ -215,6 +241,8 @@ const config: Record<EnumMvpIndex, MvpConfig> = {
         id: EnumMvpIndex.MoonlightFlower,
         name_EN: 'MoonlightFlower',
         name_CN: '月夜猫',
+        name_map: 'Moonlight',
+        name_momo: 'MoonlightFlower',
         imgUrl: 'https://file5s.ratemyserver.net/mobs/1150.gif',
         credibility: true,
         respawn_map: {
@@ -229,6 +257,8 @@ const config: Record<EnumMvpIndex, MvpConfig> = {
         id: EnumMvpIndex.OrcHero,
         name_EN: 'OrcHero',
         name_CN: '兽人英雄',
+        name_map: 'Orc Hero',
+        name_momo: 'OrcHero',
         imgUrl: 'https://file5s.ratemyserver.net/mobs/1087.gif',
         credibility: true,
         respawn_map: {
@@ -243,6 +273,8 @@ const config: Record<EnumMvpIndex, MvpConfig> = {
         id: EnumMvpIndex.OrcLord,
         name_EN: 'OrcLord',
         name_CN: '兽人酋长',
+        name_map: 'Orc Lord',
+        name_momo: 'OrcLord',
         imgUrl: 'https://file5s.ratemyserver.net/mobs/1190.gif',
         credibility: true,
         respawn_map: {
@@ -257,6 +289,8 @@ const config: Record<EnumMvpIndex, MvpConfig> = {
         id: EnumMvpIndex.Osiris,
         name_EN: 'Osiris',
         name_CN: '俄赛里斯',
+        name_map: 'Osiris',
+        name_momo: 'Osiris',
         imgUrl: 'https://file5s.ratemyserver.net/mobs/1038.gif',
         credibility: true,
         respawn_map: {
@@ -271,6 +305,8 @@ const config: Record<EnumMvpIndex, MvpConfig> = {
         id: EnumMvpIndex.Pharaoh,
         name_EN: 'Pharaoh',
         name_CN: '法老王',
+        name_map: 'Pharaoh',
+        name_momo: 'Pharaoh',
         imgUrl: 'https://file5s.ratemyserver.net/mobs/1157.gif',
         credibility: true,
         respawn_map: {
@@ -285,6 +321,8 @@ const config: Record<EnumMvpIndex, MvpConfig> = {
         id: EnumMvpIndex.Phreeoni,
         name_EN: 'Phreeoni',
         name_CN: '皮里恩',
+        name_map: 'Phreeoni',
+        name_momo: 'Phreeoni',
         imgUrl: 'https://file5s.ratemyserver.net/mobs/1159.gif',
         credibility: true,
         respawn_map: {
@@ -299,6 +337,8 @@ const config: Record<EnumMvpIndex, MvpConfig> = {
         id: EnumMvpIndex.TurtleGeneral,
         name_EN: 'TurtleGeneral',
         name_CN: '乌龟将军',
+        name_map: 'Turtle General',
+        name_momo: 'TurtleGeneral',
         imgUrl: 'https://file5s.ratemyserver.net/mobs/1312.gif',
         credibility: true,
         respawn_map: {
