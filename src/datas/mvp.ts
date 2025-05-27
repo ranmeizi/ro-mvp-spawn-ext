@@ -233,7 +233,7 @@ const config: Record<EnumMvpIndex, MvpConfig> = {
         imgUrl: 'https://file5s.ratemyserver.net/mobs/1059.gif',
         credibility: false,
         respawn_map: {
-            'mjolnir_04': UNKNOWN
+            'mjolnir_05': UNKNOWN
         }
     },
     // 月夜猫

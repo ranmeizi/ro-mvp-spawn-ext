@@ -106,3 +106,14 @@ function test_muti_render() {
 test_muti_render()
 
 // 与 background 建立消息通道
+const port = chrome.runtime.connect({ name: 'ragnaboards-port' });
+
+// 监听来自 background 的消息
+port.onMessage.addListener((msg) => {
+  console.log('Received from bg:', msg);
+});
+
+// 断开连接时清理（可选）
+window.addEventListener('beforeunload', () => {
+  port.disconnect();
+});
