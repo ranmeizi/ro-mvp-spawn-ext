@@ -48,7 +48,7 @@ window.addEventListener('ExtensionMessage', function (e) {
             const typeMatch = item.content.match(checkReg)?.[1]
 
             const ts = dayjs.utc(item.timestamp).tz('Asia/Shanghai').valueOf()
-
+            console.log('ss',item.content,dayjs.utc(item.timestamp).tz('Asia/Shanghai'))
             const type = TYPES[typeMatch]
 
             if (type === EnumMsgType.MVP击杀信息) {

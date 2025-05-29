@@ -37,6 +37,9 @@ function getMvpState(time_lower: number, time_upper: number, death_time: number)
 }
 
 export function renderMvpTarget(death_note: MvpDeathNote[] = test_note) {
+
+    death_note.sort((a, b) =>b.death_time- a.death_time )
+
     // 循环 MvpConfig 把 mvp 
     for (let [id, conf] of Object.entries(MvpConfig)) {
         const maps = conf.respawn_map
