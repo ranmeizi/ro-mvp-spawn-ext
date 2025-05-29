@@ -1,6 +1,14 @@
 import dayjs from "~node_modules/dayjs";
 import type { PlasmoCSConfig } from "~node_modules/plasmo/dist/type"
 import { EnumMsgType, type MomoDiscordMsg } from "~src/datas/note";
+import {ingamenewsPush} from 'src/services/momoro'
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
+
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 
 export const config: PlasmoCSConfig = {
     matches: ["https://discord.com/*"],
@@ -39,7 +47,7 @@ window.addEventListener('ExtensionMessage', function (e) {
         const msgs: MomoDiscordMsg[] = e.detail.responseBodyJson.map(item => {
             const typeMatch = item.content.match(checkReg)?.[1]
 
-            const ts = dayjs(item.timestamp).valueOf()
+            const ts = dayjs.utc(item.timestamp).tz('Asia/Shanghai').valueOf()
 
             const type = TYPES[typeMatch]
 
@@ -85,7 +93,7 @@ window.addEventListener('ExtensionMessage', function (e) {
                 }
             } else if (type === EnumMsgType.偷窃信息) {
                 // 提取关键信息
-                const res = item.content.match(dropReg) || []
+                const res = item.content.match(stoleReg) || []
                 const [_, subject, object, objectId] = res
 
                 const note: MomoDiscordMsg = {
@@ -106,8 +114,8 @@ window.addEventListener('ExtensionMessage', function (e) {
             return item
 
         })
-
-        console.log(msgs.filter(item => item.note).map(item => item.note))
+        
+        ingamenewsPush(msgs.filter(item => item.note).map(item => item.note))
 
         // 发送给Background存db
     } catch (e) {

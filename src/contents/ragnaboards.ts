@@ -1,8 +1,9 @@
 import type { PlasmoCSConfig, PlasmoGetStyle } from "plasmo"
-import { getAllMapRelateContainer, getMapTile } from "../uitls/contents/getMapTile"
-import { renderMvpTarget } from "../uitls/contents/renderMvpTarget"
+import { getAllMapRelateContainer, getMapTile } from "../utils/contents/getMapTile"
+import { renderMvpTarget } from "../utils/contents/renderMvpTarget"
 import injectCss from "data-text:~inject.style.css"
 import { useEffect } from "~node_modules/@types/react"
+import { getMvpDeathNote } from "~src/services/momoro"
 
 // 定义要注入的 CSS
 function inject() {
@@ -96,24 +97,30 @@ getAllMapRelateContainer()
 // 首次渲染
 renderMvpTarget()
 
-// 模拟多次渲染
-function test_muti_render() {
-  setInterval(() => {
-    renderMvpTarget()
-  }, 1000 * 10);
+// // 与 background 建立消息通道
+// const port = chrome.runtime.connect({ name: 'ragnaboards-port' });
+
+// // 监听来自 background 的消息
+// port.onMessage.addListener((msg) => {
+//   console.log('Received from bg:', msg);
+// });
+
+// // 断开连接时清理（可选）
+// window.addEventListener('beforeunload', () => {
+//   port.disconnect();
+// });
+
+const INTERVAL = 1000 * 60 * 10
+
+// 轮询请求接口
+async function pullData() {
+  const res = await getMvpDeathNote()
+
+  const note = res.data
+
+  renderMvpTarget(note)
+
+  setTimeout(pullData, INTERVAL);
 }
 
-test_muti_render()
-
-// 与 background 建立消息通道
-const port = chrome.runtime.connect({ name: 'ragnaboards-port' });
-
-// 监听来自 background 的消息
-port.onMessage.addListener((msg) => {
-  console.log('Received from bg:', msg);
-});
-
-// 断开连接时清理（可选）
-window.addEventListener('beforeunload', () => {
-  port.disconnect();
-});
+pullData()

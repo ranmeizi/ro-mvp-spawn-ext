@@ -1,5 +1,5 @@
 export enum EnumMvpIndex {
-    AmonRa = '1511',
+    // AmonRa = '1511',
     Baphomet = '1039',
     DarkLord = '1272',
     Doppelganger = '1046',
@@ -54,18 +54,18 @@ export type MvpDeathNote = {
 
 const config: Record<EnumMvpIndex, MvpConfig> = {
     // 埃及王
-    [EnumMvpIndex.AmonRa]: {
-        id: EnumMvpIndex.AmonRa,
-        name_EN: 'AmonRa',
-        name_CN: '古埃及王',
-        name_map: 'Amon Ra',
-        name_momo: 'AmonRa',
-        imgUrl: 'https://file5s.ratemyserver.net/mobs/1511.gif',
-        credibility: false, // 未和gm确认
-        respawn_map: {
-            'moc_pryd06': UNKNOWN
-        }
-    },
+    // [EnumMvpIndex.AmonRa]: {
+    //     id: EnumMvpIndex.AmonRa,
+    //     name_EN: 'AmonRa',
+    //     name_CN: '古埃及王',
+    //     name_map: 'Amon Ra',
+    //     name_momo: 'AmonRa',
+    //     imgUrl: 'https://file5s.ratemyserver.net/mobs/1511.gif',
+    //     credibility: false, // 未和gm确认
+    //     respawn_map: {
+    //         'moc_pryd06': UNKNOWN
+    //     }
+    // },
     // 巴风特
     [EnumMvpIndex.Baphomet]: {
         id: EnumMvpIndex.Baphomet,

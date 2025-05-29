@@ -9,23 +9,27 @@ import MvpConfig, { EnumMvpIndex } from '~src/datas/mvp'
 import { tileEls } from "./getMapTile";
 import dayjs from "~node_modules/dayjs";
 import duration from 'dayjs/plugin/duration'
+import utc from 'dayjs/plugin/utc';
 
 dayjs.extend(duration)
+dayjs.extend(utc);
 
 // 测试数据
-const test_note: MvpDeathNote[] = [
-    { id: EnumMvpIndex.Eddga, death_time: dayjs().subtract(23, 'minute').valueOf(), killer: 'GM01' },
-    { id: EnumMvpIndex.Baphomet, death_time: dayjs().subtract(130, 'minute').valueOf(), killer: 'GM01' }
-]
+const test_note: MvpDeathNote[] = []
+// [
+//     { id: EnumMvpIndex.Eddga, death_time: dayjs().subtract(23, 'minute').valueOf(), killer: 'GM01' },
+//     { id: EnumMvpIndex.Baphomet, death_time: dayjs().subtract(130, 'minute').valueOf(), killer: 'GM01' }
+// ]
 
 function getMvpState(time_lower: number, time_upper: number, death_time: number): 'alive' | 'dead' | 'maybe' {
     // 如果 没有 death_time 或者 death_time + time_upper < now 那就一定活着
-    if (!death_time || death_time + time_upper < dayjs().valueOf()) {
+    console.log('compare', dayjs(death_time), dayjs().valueOf(), time_lower, time_upper)
+    if (!death_time || death_time + time_upper < Date.now()) {
         return 'alive'
     }
 
     // 如果 death_time + time_lower> now 那就一定死了
-    if (death_time + time_lower > dayjs().valueOf()) {
+    if (death_time + time_lower > Date.now()) {
         return 'dead'
     }
 
@@ -49,6 +53,8 @@ export function renderMvpTarget(death_note: MvpDeathNote[] = test_note) {
 
             // 用 time_lower, time_upper 和 death_time 值计算一下 mvp 是否存活
             const state = getMvpState(time_lower, time_upper, death_time)
+
+            console.log('see', id, death_time, time_lower, time_upper)
 
             const wrapEl = container.querySelector('.mvp-icon')
             if (wrapEl) {
