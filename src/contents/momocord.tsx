@@ -1,10 +1,13 @@
-import dayjs from "~node_modules/dayjs";
-import type { PlasmoCSConfig } from "~node_modules/plasmo/dist/type"
-import { EnumMsgType, type MomoDiscordMsg } from "~src/datas/note";
-import {ingamenewsPush} from 'src/services/momoro'
+import type { PlasmoCSConfig } from "plasmo"
+import { EnumMsgType, type MomoDiscordMsg } from "@/datas/note";
+import { ingamenewsPush } from '@/services/momoro'
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
-
+import Control from '@/components/Control'
+import dayjs from "dayjs";
+import ToolBar from "@/components/ToolBar";
+import InjectRoot from "@/components/InjectRoot";
+import '@/utils/CommandMsgHandler'
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -48,7 +51,7 @@ window.addEventListener('ExtensionMessage', function (e) {
             const typeMatch = item.content.match(checkReg)?.[1]
 
             const ts = dayjs.utc(item.timestamp).tz('Asia/Shanghai').valueOf()
-            console.log('ss',item.content,dayjs.utc(item.timestamp).tz('Asia/Shanghai'))
+            console.log('ss', item.content, dayjs.utc(item.timestamp).tz('Asia/Shanghai'))
             const type = TYPES[typeMatch]
 
             if (type === EnumMsgType.MVP击杀信息) {
@@ -114,7 +117,7 @@ window.addEventListener('ExtensionMessage', function (e) {
             return item
 
         })
-        
+
         ingamenewsPush(msgs.filter(item => item.note).map(item => item.note))
 
         // 发送给Background存db
@@ -122,3 +125,9 @@ window.addEventListener('ExtensionMessage', function (e) {
         console.log('e', e)
     }
 })
+
+export default function () {
+    return <InjectRoot>
+        <ToolBar type='momocord'></ToolBar>
+    </InjectRoot>
+}

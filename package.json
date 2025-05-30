@@ -10,9 +10,13 @@
     "package": "plasmo package"
   },
   "dependencies": {
+    "@emotion/cache": "^11.14.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@mui/material": "^7.1.0",
+    "@mui/icons-material": "^7.1.0",
+    "@mui/material": "5.15.14 ",
+    "@mui/x-data-grid": "^8.5.0",
+    "@plasmohq/messaging": "^0.7.1",
     "axios": "^1.9.0",
     "dayjs": "^1.11.13",
     "dayjs-plugin-utc": "^0.1.2",
@@ -37,7 +41,8 @@
     "permissions": [
       "scripting",
       "storage",
-      "unlimitedStorage"
+      "unlimitedStorage",
+      "sidePanel"
     ],
     "web_accessible_resources": [
       {

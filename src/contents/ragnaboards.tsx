@@ -1,9 +1,11 @@
 import type { PlasmoCSConfig, PlasmoGetStyle } from "plasmo"
 import { getAllMapRelateContainer, getMapTile } from "../utils/contents/getMapTile"
 import { renderMvpTarget } from "../utils/contents/renderMvpTarget"
-import injectCss from "data-text:~inject.style.css"
-import { useEffect } from "~node_modules/@types/react"
-import { getMvpDeathNote } from "~src/services/momoro"
+import { getMvpDeathNote } from "@/services/momoro"
+import InjectRoot from "@/components/InjectRoot"
+import Control from "@/components/Control"
+import ToolBar from "@/components/ToolBar"
+import '@/utils/CommandMsgHandler'
 
 // 定义要注入的 CSS
 function inject() {
@@ -111,6 +113,7 @@ renderMvpTarget()
 // });
 
 const INTERVAL = 1000 * 60 * 10
+let timer = undefined
 
 // 轮询请求接口
 async function pullData() {
@@ -120,7 +123,20 @@ async function pullData() {
 
   renderMvpTarget(note)
 
-  setTimeout(pullData, INTERVAL);
+  timer = setTimeout(pullData, INTERVAL);
 }
 
 pullData()
+
+window.ext_refresh = () => {
+  console.log('ext_refresh')
+  timer && clearTimeout(timer)
+  timer = null
+  pullData()
+}
+
+export default function (props) {
+  return <InjectRoot>
+    <ToolBar type='ragnaboard'></ToolBar>
+  </InjectRoot>
+}

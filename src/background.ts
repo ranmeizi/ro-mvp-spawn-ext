@@ -18,3 +18,12 @@ chrome.runtime.onConnect.addListener((port) => {
 
   console.log('链接了')
 });
+
+
+// background.js 或 background.ts
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === "open_side_panel") {
+    const tabId = sender.tab?.id
+    chrome.sidePanel.open({ tabId })
+  }
+})
