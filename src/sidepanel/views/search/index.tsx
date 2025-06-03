@@ -8,10 +8,29 @@ import { EnumMsgType } from "@/datas/note";
 const columns: GridColDef<any>[] = [
     { field: 'subject', headerName: '游戏id', width: 200 },
     { field: 'object', headerName: '对象', width: 200 },
-    { field: 'objectId', headerName: '对象id', width: 100 },
-    { field: 'type', headerName: '类型', width: 100,renderCell(params) {
-        return EnumMsgType[params.value]
-    }, },
+    {
+        field: 'objectId', headerName: '对象id', width: 100,
+        renderCell(params) {
+            const type = params.row.type
+            if (type === EnumMsgType.偷窃信息 || type === EnumMsgType.掉落信息) {
+                const url = `https://ratemyserver.net/index.php?iname=${params.row.objectId}&page=item_db&quick=1&isearch=Search`
+                return <Button onClick={() => {
+                    window.open(url, '_blank')
+                }}>{params.value}</Button>
+            } else if (type === EnumMsgType.MVP击杀信息) {
+                const url = `https://ratemyserver.net/index.php?mob_name=${params.row.objectId}&page=mob_db&quick=1&f=1&mob_search=Search`
+                return <Button onClick={() => {
+                    window.open(url, '_blank')
+                }}>{params.value}</Button>
+            }
+            return params.value
+        },
+    },
+    {
+        field: 'type', headerName: '类型', width: 100, renderCell(params) {
+            return EnumMsgType[params.value]
+        },
+    },
 ];
 
 
@@ -22,7 +41,7 @@ export default function () {
     const [loading, setLoading] = useState(false)
 
     const [{ total, ...pagination }, setPagination] = useState({
-        page: 1,
+        page: 0,
         pageSize: 20,
         total: 0
     })
@@ -38,7 +57,7 @@ export default function () {
         setLoading(true)
         try {
             const res = await searchNews({
-                current: page,
+                current: page + 1,
                 pageSize: pageSize,
                 search,
                 type
@@ -119,7 +138,7 @@ export default function () {
             loadingPosition="start"
             startIcon={<RefreshIcon />}
             variant="outlined"
-            onClick={() => getData(1, pagination.pageSize)}
+            onClick={() => getData(0, pagination.pageSize)}
             sx={{ mb: 2 }}
         >
             查询
@@ -131,7 +150,7 @@ export default function () {
             rowCount={total}
             paginationMode='server'
             paginationModel={{
-                page: pagination.page - 1,
+                page: pagination.page,
                 pageSize: pagination.pageSize
             }}
             onPaginationModelChange={(p) => getData(p.page, p.pageSize)}

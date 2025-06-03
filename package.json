@@ -42,7 +42,8 @@
       "scripting",
       "storage",
       "unlimitedStorage",
-      "sidePanel"
+      "sidePanel",
+      "tabs"
     ],
     "web_accessible_resources": [
       {
