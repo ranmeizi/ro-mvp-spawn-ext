@@ -24,6 +24,11 @@ chrome.runtime.onConnect.addListener((port) => {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "open_side_panel") {
     const tabId = sender.tab?.id
+
+
+    chrome.sidePanel.setOptions({
+      path: `sidepanel.html?type=${message.data.type}`,
+    });
     chrome.sidePanel.open({ tabId })
   }
 })

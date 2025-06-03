@@ -5,7 +5,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import { getRewardRank } from "@/services/momoro";
 
 const columns: GridColDef<any>[] = [
-    { field: 'subject', headerName: '游戏id', width: 300 },
+    { field: 'subject', headerName: '游戏id', width: 200 },
     {
         field: 'cnt',
         headerName: '次数',
@@ -54,7 +54,6 @@ export default function () {
             getRowId={row => row.subject}
             rows={data}
             columns={columns}
-            hideFooterPagination
         />
     </Box>
 }

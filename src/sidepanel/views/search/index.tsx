@@ -3,12 +3,15 @@ import { DataGrid, type GridColDef } from '@mui/x-data-grid';
 import { useEffect, useState } from "react";
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { getRewardRank, searchNews } from "@/services/momoro";
+import { EnumMsgType } from "@/datas/note";
 
 const columns: GridColDef<any>[] = [
-    { field: 'subject', headerName: '游戏id', width: 300 },
-    { field: 'object', headerName: '对象', width: 300 },
+    { field: 'subject', headerName: '游戏id', width: 200 },
+    { field: 'object', headerName: '对象', width: 200 },
     { field: 'objectId', headerName: '对象id', width: 100 },
-    { field: 'type', headerName: '类型', width: 100 },
+    { field: 'type', headerName: '类型', width: 100,renderCell(params) {
+        return EnumMsgType[params.value]
+    }, },
 ];
 
 
@@ -28,10 +31,10 @@ export default function () {
     const [type, setType] = useState('1,2')
 
     useEffect(() => {
-        getData(pagination)
+        getData(pagination.page, pagination.pageSize)
     }, [])
 
-    async function getData({ page, pageSize }) {
+    async function getData(page, pageSize) {
         setLoading(true)
         try {
             const res = await searchNews({
@@ -74,6 +77,7 @@ export default function () {
             <Box className='form-item'>
                 <TextField
                     id="outlined-basic"
+                    size='small'
                     value={search} onChange={(e) => setSearch(e.target.value)}
                     label="关键字搜索"
                     placeholder="游戏ID/物品名称/MVP名称/物品id"
@@ -83,13 +87,14 @@ export default function () {
             </Box>
             <Box className='form-item' sx={{ mb: 2 }}>
                 <Select
+                    size='small'
                     labelId="demo-multiple-name-label"
                     id="demo-multiple-name"
                     multiple
                     value={type.split(',')}
                     onChange={(e) => {
                         const value = e.target.value
-                        console.log('vvvvvvv',value)
+                        console.log('vvvvvvv', value)
                         setType(typeof value === 'string' ? value : value.join(','));
                     }}
                     input={<OutlinedInput label="Name" />}
@@ -114,7 +119,7 @@ export default function () {
             loadingPosition="start"
             startIcon={<RefreshIcon />}
             variant="outlined"
-            onClick={() => getData(pagination)}
+            onClick={() => getData(1, pagination.pageSize)}
             sx={{ mb: 2 }}
         >
             查询
@@ -125,8 +130,11 @@ export default function () {
             columns={columns}
             rowCount={total}
             paginationMode='server'
-            paginationModel={pagination}
-            onPaginationModelChange={(p) => getData(p)}
+            paginationModel={{
+                page: pagination.page - 1,
+                pageSize: pagination.pageSize
+            }}
+            onPaginationModelChange={(p) => getData(p.page, p.pageSize)}
         />
     </Box>
 }

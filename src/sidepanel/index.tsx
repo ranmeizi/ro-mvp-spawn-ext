@@ -3,7 +3,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Ranking from "./views/ranking";
 import Search from "./views/search";
 
@@ -32,11 +32,26 @@ export default function () {
         }
     }, [active])
 
+    function getSerch() {
+        const params = new URLSearchParams(location.search)
+        const type = params.get('type')
+
+        if (type === 'search') {
+            setActive(0)
+        } else if (type === 'ranking') {
+            setActive(1)
+        }
+    }
+
+    useEffect(() => {
+        getSerch()
+    }, [])
+
 
     return <ThemeProvider theme={createTheme({ palette: { mode: prefersDarkMode ? 'dark' : 'light' } })}>
         <CssBaseline />
         <Box>
-            <Box sx={{ padding: 2,pb:'64px' }}>
+            <Box sx={{ padding: 2, pb: '64px' }}>
                 <Typography variant="h5" gutterBottom component="div" sx={{ p: 2, pb: 0 }}>
                     IngameNews 小助手
                 </Typography>

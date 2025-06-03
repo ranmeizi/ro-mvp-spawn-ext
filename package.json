@@ -1,7 +1,7 @@
 {
   "name": "ro-mvp-spawn-ext",
   "displayName": "Ro mvp spawn ext",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "从ingame channel获取数据更新到地图页上",
   "author": "boboan",
   "scripts": {

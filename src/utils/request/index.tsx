@@ -5,7 +5,8 @@ const isDev = process.env.NODE_ENV === "development";
 
 
 const instance = axios.create({
-  baseURL: isDev ? "http://localhost:3000" : "https://boboan.net/api", // 根据实际情况修改
+  // baseURL: isDev ? "http://localhost:3000" : "https://boboan.net/api", // 根据实际情况修改
+  baseURL: "https://boboan.net/api", // 根据实际情况修改
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
