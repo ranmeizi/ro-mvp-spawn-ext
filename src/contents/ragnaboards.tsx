@@ -6,6 +6,7 @@ import InjectRoot from "@/components/InjectRoot"
 import Control from "@/components/Control"
 import ToolBar from "@/components/ToolBar"
 import '@/utils/CommandMsgHandler'
+import ContextMenu from "@/components/ContextMenu"
 
 // 定义要注入的 CSS
 function inject() {
@@ -81,6 +82,19 @@ function inject() {
     width     : 100%;
     filter: brightness(1);
 }
+
+.mvp-alarm {
+    position:absolute;
+    left:0;
+    top:0;
+    height:24px;
+    width:24px;
+}
+    .mvp-alarm.active{
+     background-image: url("${chrome.runtime.getURL("assets/fill-alarm.png")}");
+    background-size:100% 100%;
+      transform:rotateZ(-25deg)
+    }
   `
   document.head.appendChild(style)
 }
@@ -99,41 +113,21 @@ getAllMapRelateContainer()
 // 首次渲染
 renderMvpTarget()
 
-// // 与 background 建立消息通道
-// const port = chrome.runtime.connect({ name: 'ragnaboards-port' });
+// 与 background 建立消息通道
+const port = chrome.runtime.connect({ name: 'ragnaboards-port' });
 
-// // 监听来自 background 的消息
-// port.onMessage.addListener((msg) => {
-//   console.log('Received from bg:', msg);
-// });
+// 监听来自 background 的消息
+port.onMessage.addListener((msg) => {
+  console.log('Received from bg:', msg);
+  if (msg.type === 'mvp_status') {
+    renderMvpTarget(msg.data)
+  }
+});
 
-// // 断开连接时清理（可选）
-// window.addEventListener('beforeunload', () => {
-//   port.disconnect();
-// });
-
-const INTERVAL = 1000 * 60 * 10
-let timer = undefined
-
-// 轮询请求接口
-async function pullData() {
-  const res = await getMvpDeathNote()
-
-  const note = res.data
-
-  renderMvpTarget(note)
-
-  timer = setTimeout(pullData, INTERVAL);
-}
-
-pullData()
-
-window.ext_refresh = () => {
-  console.log('ext_refresh')
-  timer && clearTimeout(timer)
-  timer = null
-  pullData()
-}
+// 断开连接时清理（可选）
+window.addEventListener('beforeunload', () => {
+  port.disconnect();
+});
 
 export default function (props) {
   return <InjectRoot>

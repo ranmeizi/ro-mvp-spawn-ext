@@ -43,7 +43,8 @@
       "storage",
       "unlimitedStorage",
       "sidePanel",
-      "tabs"
+      "tabs",
+      "notifications"
     ],
     "web_accessible_resources": [
       {

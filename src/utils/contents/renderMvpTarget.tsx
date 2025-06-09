@@ -4,12 +4,13 @@
  * 可变的是 实时拉取的 mvp death note
  */
 
-import type { MvpDeathNote } from "~src/datas/mvp";
-import MvpConfig, { EnumMvpIndex } from '~src/datas/mvp'
+import type { MvpDeathNote } from "@/datas/mvp";
+import MvpConfig, { EnumMvpIndex } from '@/datas/mvp'
 import { tileEls } from "./getMapTile";
-import dayjs from "~node_modules/dayjs";
 import duration from 'dayjs/plugin/duration'
 import utc from 'dayjs/plugin/utc';
+import dayjs from "dayjs";
+
 
 dayjs.extend(duration)
 dayjs.extend(utc);
@@ -21,7 +22,7 @@ const test_note: MvpDeathNote[] = []
 //     { id: EnumMvpIndex.Baphomet, death_time: dayjs().subtract(130, 'minute').valueOf(), killer: 'GM01' }
 // ]
 
-function getMvpState(time_lower: number, time_upper: number, death_time: number): 'alive' | 'dead' | 'maybe' {
+export function getMvpState(time_lower: number, time_upper: number, death_time: number): 'alive' | 'dead' | 'maybe' {
     // 如果 没有 death_time 或者 death_time + time_upper < now 那就一定活着
     console.log('compare', dayjs(death_time), dayjs().valueOf(), time_lower, time_upper)
     if (!death_time || death_time + time_upper < Date.now()) {
@@ -36,9 +37,8 @@ function getMvpState(time_lower: number, time_upper: number, death_time: number)
     return 'maybe'
 }
 
-export function renderMvpTarget(death_note: MvpDeathNote[] = test_note) {
-
-    death_note.sort((a, b) =>b.death_time- a.death_time )
+export async function renderMvpTarget(death_note: MvpDeathNote[] = test_note) {
+    death_note.sort((a, b) => b.death_time - a.death_time)
 
     // 循环 MvpConfig 把 mvp 
     for (let [id, conf] of Object.entries(MvpConfig)) {
@@ -50,14 +50,12 @@ export function renderMvpTarget(death_note: MvpDeathNote[] = test_note) {
             const container = tileEls[map]
             const { time_lower, time_upper } = mapConf
 
-            const { death_time, killer } = death_note.find(item => item.id === id) || {}
+            const { death_time, killer } = death_note.find(item => item.id === id && item.map === map) || {}
 
             // A. 处理浮动图标
 
             // 用 time_lower, time_upper 和 death_time 值计算一下 mvp 是否存活
             const state = getMvpState(time_lower, time_upper, death_time)
-
-            console.log('see', id, death_time, time_lower, time_upper)
 
             const wrapEl = container.querySelector('.mvp-icon')
             if (wrapEl) {
@@ -73,6 +71,42 @@ export function renderMvpTarget(death_note: MvpDeathNote[] = test_note) {
             newEl.appendChild(img)
 
             container.appendChild(newEl)
+
+            // 处理订阅状态
+
+            const subscribes = await getSubscribes()
+
+            const isSubscribe = subscribes.includes(`${map}-${id}`)
+
+            const alarmEl = container.querySelector('.mvp-alarm')
+
+            if (alarmEl) {
+                container.removeChild(alarmEl)
+            }
+
+            const newAlarm = document.createElement('div')
+            newAlarm.className = `mvp-alarm ${isSubscribe ? 'active' : ''}`
+
+            container.appendChild(newAlarm)
+
+            container.oncontextmenu = async function () {
+                const subscribes = await getSubscribes()
+
+                const isSubscribe = subscribes.includes(`${map}-${id}`)
+
+                if (!isSubscribe) {
+                    if (window.confirm(`要订阅 ${map} 地图的 ${name} 复活消息?`)) {
+                        await chrome.storage.local.set({ mvp_subscribes: [...subscribes, `${map}-${id}`] })
+                        container.querySelector('.mvp-alarm').classList.add('active')
+                    }
+                } else {
+                    if (window.confirm(`取消订阅 ${map} 地图的 ${name} 复活消息?`)) {
+                        await chrome.storage.local.set({ mvp_subscribes: subscribes.filter(item => item !== `${map}-${id}`) })
+                        container.querySelector('.mvp-alarm').classList.remove('active')
+                    }
+                }
+
+            }
 
             // B. 处理表格 td
             const tds = container.querySelectorAll('table .tt-row .mob-name')
@@ -90,12 +124,15 @@ export function renderMvpTarget(death_note: MvpDeathNote[] = test_note) {
                 hasMvp = true
 
                 const tag = td.childNodes?.[1]
+                const btn = td.childNodes?.[2]
 
                 if (tag) {
                     td.removeChild(tag)
                 }
 
-
+                if (btn) {
+                    td.removeChild(btn)
+                }
 
                 switch (state) {
                     case "alive":
@@ -105,6 +142,7 @@ export function renderMvpTarget(death_note: MvpDeathNote[] = test_note) {
                             t.innerText = `(${chrome.i18n.getMessage('Alive')})`
                             t.style.color = 'green'
                             td.appendChild(t)
+
                         } break;
                     case "dead":
                         {
@@ -116,6 +154,7 @@ export function renderMvpTarget(death_note: MvpDeathNote[] = test_note) {
                                 .replace('{1}', dayjs(death_time).format('YYYY-MM-DD HH:mm:ss'))})`
                             t.style.color = 'red'
                             td.appendChild(t)
+
                         } break;
 
                     case "maybe":
@@ -130,6 +169,7 @@ export function renderMvpTarget(death_note: MvpDeathNote[] = test_note) {
                                 })`
                             t.style.color = 'orange'
                             td.appendChild(t)
+
                         } break;
 
                 }
@@ -166,3 +206,7 @@ export function renderMvpTarget(death_note: MvpDeathNote[] = test_note) {
 
 }
 
+export async function getSubscribes() {
+    const subscribes = (await chrome.storage.local.get(['mvp_subscribes']))?.mvp_subscribes || []
+    return subscribes
+}

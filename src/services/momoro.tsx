@@ -22,3 +22,10 @@ export function searchNews(params: {
 }) {
     return axios.get('/momoro/rewards/list', { params })
 }
+
+export function rewardsStatistic(params: {
+    search: string,
+    type: '1' | '2'
+}) {
+    return axios.get('/momoro/reward/statistic', { params })
+}

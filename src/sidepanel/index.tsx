@@ -6,6 +6,8 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import { useEffect, useMemo, useState } from "react";
 import Ranking from "./views/ranking";
 import Search from "./views/search";
+import Subscribes from "./views/subscribes";
+import Group from "./views/group";
 
 const StyledFab = styled(Fab)({
     position: 'absolute',
@@ -27,6 +29,10 @@ export default function () {
                 return <Search />
             case 1:
                 return <Ranking />
+            case 2:
+                return <Group />
+            case 3:
+                return <Subscribes/>
             default:
                 return 'empty'
         }
@@ -58,6 +64,8 @@ export default function () {
                 <Tabs value={active} onChange={(e, v) => setActive(v)} centered>
                     <Tab label="数据查询" />
                     <Tab label="掉落排名" />
+                    <Tab label="掉落统计" />
+                    <Tab label="订阅列表" />
                 </Tabs>
                 {view}
             </Box>

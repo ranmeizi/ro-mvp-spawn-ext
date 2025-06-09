@@ -118,7 +118,12 @@ window.addEventListener('ExtensionMessage', function (e) {
 
         })
 
-        ingamenewsPush(msgs.filter(item => item.note).map(item => item.note))
+        ingamenewsPush(msgs.filter(item => item.note).map(item => item.note)).then(res=>{
+            if(res?.data?.code==='000000'){
+                // 立刻刷新查一下
+                chrome.runtime.sendMessage({ type: "mvp_refresh" })
+            }
+        })
 
         // 发送给Background存db
     } catch (e) {

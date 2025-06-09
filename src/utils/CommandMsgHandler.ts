@@ -5,7 +5,7 @@ window.addEventListener('CommandMessage', function (e) {
 
     switch (key) {
         case '刷新':
-            window.ext_refresh()
+            chrome.runtime.sendMessage({ type: "mvp_refresh" })
             break;
         case "Discord":
             window.open('https://discord.com/channels/1188424174012731432/1353165010582638713')

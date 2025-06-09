@@ -50,6 +50,7 @@ export type MvpDeathNote = {
     id: string
     killer: string // 击杀者
     death_time: number // 死亡时间
+    map: string // 地图
 }
 
 const config: Record<EnumMvpIndex, MvpConfig> = {
@@ -77,6 +78,10 @@ const config: Record<EnumMvpIndex, MvpConfig> = {
         credibility: true,
         respawn_map: {
             'prt_maze03': {
+                time_lower: min(120),
+                time_upper: min(180),
+            },
+            'gl_cas02': {
                 time_lower: min(120),
                 time_upper: min(180),
             }
