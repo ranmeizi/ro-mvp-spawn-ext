@@ -170,7 +170,7 @@ const config: Record<EnumMvpIndex, MvpConfig> = {
         name_EN: 'Garm',
         name_CN: '卡仑',
         name_map: 'Garm',
-        name_momo: 'Garm',
+        name_momo: 'Hatii',
         imgUrl: 'https://file5s.ratemyserver.net/mobs/1252.gif',
         credibility: true,
         respawn_map: {
@@ -184,7 +184,7 @@ const config: Record<EnumMvpIndex, MvpConfig> = {
     [EnumMvpIndex.GoldenThiefBug]: {
         id: EnumMvpIndex.GoldenThiefBug,
         name_EN: 'GoldenThiefBug',
-        name_CN: '卡仑',
+        name_CN: '黄金虫',
         name_map: 'Golden Thief Bug',
         name_momo: 'GoldenThiefBug',
         imgUrl: 'https://file5s.ratemyserver.net/mobs/1086.gif',
