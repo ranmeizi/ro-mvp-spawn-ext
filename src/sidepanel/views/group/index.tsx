@@ -4,11 +4,7 @@ import { useEffect, useState } from "react";
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { getRewardRank, rewardsStatistic, searchNews } from "@/services/momoro";
 import { EnumMsgType } from "@/datas/note";
-
-const columns: GridColDef<any>[] = [
-    { field: 'subject', headerName: '主体', width: 200 },
-    { field: 'cnt', headerName: '次数', width: 200 },
-];
+import { useI18n } from "@/locales";
 
 
 export default function () {
@@ -16,6 +12,8 @@ export default function () {
     const [data, setData] = useState([])
 
     const [loading, setLoading] = useState(false)
+
+    const { t } = useI18n()
 
     const [search, setSearch] = useState('')
     const [type, setType] = useState<'1' | '2'>('1')
@@ -30,9 +28,14 @@ export default function () {
         }
     }
 
+    const columns: GridColDef<any>[] = [
+        { field: 'subject', headerName: t('tableCol.object'), width: 200 },
+        { field: 'cnt', headerName: t('tableCols.cnt'), width: 200 },
+    ];
+
     return <Box>
         <Typography variant='h6' gutterBottom component="div" sx={{ p: 2 }}>
-            按人物 / 按物品 统计掉落
+            {t('tab.newsStatistic.title')}
         </Typography>
         <Box display='flex' sx={{
             containerType: 'inline-size',
@@ -52,23 +55,23 @@ export default function () {
         >
             <Box className='form-item' sx={{ mb: 2 }}>
                 <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">统计维度</InputLabel>
+                    <InputLabel id="demo-simple-select-label">{t('tab.newsStatistic.groupBy')}</InputLabel>
                     <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         value={type}
                         size='small'
-                        label="统计维度"
+                        label={t('tab.newsStatistic.groupBy')}
                         onChange={(e) => {
                             const value = e.target.value
                             setType(value);
                         }}
                     >
                         <MenuItem value={'1'}>
-                            按物品统计
+                            {t('tab.newsStatistic.groupBy.object')}
                         </MenuItem>
                         <MenuItem value={'2'}>
-                            按人物统计
+                            {t('tab.newsStatistic.groupBy.subject')}
                         </MenuItem>
                     </Select>
                 </FormControl>
@@ -79,8 +82,12 @@ export default function () {
                     id="outlined-basic"
                     size='small'
                     value={search} onChange={(e) => setSearch(e.target.value)}
-                    label={type === '1' ? '物品id' : '人物名称'}
-                    placeholder={type === '1' ? '请输入物品名或ID' : '请输入人物名称'}
+                    label={type === '1'
+                        ? t('tab.newsStatistic.input.label.whenObject')
+                        : t('tab.newsStatistic.input.label.whenSubject')}
+                    placeholder={type === '1'
+                        ? t('tab.newsStatistic.input.placeholder.whenObject')
+                        : t('tab.newsStatistic.input.placeholder.whenSubject')}
                     variant="outlined"
                     sx={{ width: '100%' }}
                 />
@@ -96,7 +103,7 @@ export default function () {
             onClick={() => getData()}
             sx={{ mb: 2 }}
         >
-            查询
+            {t('query')}
         </Button>
         <DataGrid
             getRowId={row => row.subject}

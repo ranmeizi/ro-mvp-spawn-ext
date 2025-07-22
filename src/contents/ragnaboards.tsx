@@ -1,12 +1,11 @@
-import type { PlasmoCSConfig, PlasmoGetStyle } from "plasmo"
-import { getAllMapRelateContainer, getMapTile } from "../utils/contents/getMapTile"
+import type { PlasmoCSConfig } from "plasmo"
+import { getAllMapRelateContainer } from "../utils/contents/getMapTile"
 import { renderMvpTarget } from "../utils/contents/renderMvpTarget"
-import { getMvpDeathNote } from "@/services/momoro"
+
 import InjectRoot from "@/components/InjectRoot"
-import Control from "@/components/Control"
+
 import ToolBar from "@/components/ToolBar"
 import '@/utils/CommandMsgHandler'
-import ContextMenu from "@/components/ContextMenu"
 
 // 定义要注入的 CSS
 function inject() {
@@ -104,30 +103,43 @@ export const config: PlasmoCSConfig = {
   all_frames: true,
 }
 
-// 注入css
-inject()
+async function getLang() {  
+  window.lang =await chrome.storage.local.get('lang')
+}
 
-// 初始化 dom 引用
-getAllMapRelateContainer()
+console.log('hi ocntent')
 
-// 首次渲染
-renderMvpTarget()
+async function main() {
+  // 获取lang
+  await getLang()
 
-// 与 background 建立消息通道
-const port = chrome.runtime.connect({ name: 'ragnaboards-port' });
+  // 注入css
+  inject()
 
-// 监听来自 background 的消息
-port.onMessage.addListener((msg) => {
-  console.log('Received from bg:', msg);
-  if (msg.type === 'mvp_status') {
-    renderMvpTarget(msg.data)
-  }
-});
+  // 初始化 dom 引用
+  getAllMapRelateContainer()
 
-// 断开连接时清理（可选）
-window.addEventListener('beforeunload', () => {
-  port.disconnect();
-});
+  // 首次渲染
+  renderMvpTarget()
+
+  // 与 background 建立消息通道
+  const port = chrome.runtime.connect({ name: 'ragnaboards-port' });
+
+  // 监听来自 background 的消息
+  port.onMessage.addListener((msg) => {
+    console.log('Received from bg:', msg);
+    if (msg.type === 'mvp_status') {
+      renderMvpTarget(msg.data)
+    }
+  });
+
+  // 断开连接时清理（可选）
+  window.addEventListener('beforeunload', () => {
+    port.disconnect();
+  });
+}
+
+main()
 
 export default function (props) {
   return <InjectRoot>

@@ -9,19 +9,7 @@ import DvrIcon from '@mui/icons-material/Dvr';
 import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
 import CrueltyFreeIcon from '@mui/icons-material/CrueltyFree';
 import MapIcon from '@mui/icons-material/Map';
-
-const ragnaBoardsActions = [
-  { icon: <RefreshIcon />, name: '刷新' },
-  { icon: <CrueltyFreeIcon />, name: 'Discord' },
-  { icon: <ContentPasteSearchIcon />, name: '查看数据' },
-  { icon: <DvrIcon />, name: '查看排行' },
-];
-
-const momoCordActions = [
-  { icon: <MapIcon />, name: '地图' },
-  { icon: <ContentPasteSearchIcon />, name: '查看数据' },
-  { icon: <DvrIcon />, name: '查看排行' },
-];
+import { t } from '@/locales';
 
 type ToolBarProps = {
   type: 'momocord' | 'ragnaboard'
@@ -31,6 +19,21 @@ export default function ToolBar({ type }: ToolBarProps) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+
+const ragnaBoardsActions = [
+  { icon: <RefreshIcon />, name: t(window.lang, 'refresh') },
+  { icon: <CrueltyFreeIcon />, name: 'Discord' },
+  { icon: <ContentPasteSearchIcon />, name: t(window.lang, 'navToDataQuery') },
+  { icon: <DvrIcon />, name: t(window.lang, 'navToRanking') },
+];
+
+const momoCordActions = [
+  { icon: <MapIcon />, name: t(window.lang, 'map') },
+  { icon: <ContentPasteSearchIcon />, name: t(window.lang, 'navToDataQuery') },
+  { icon: <DvrIcon />, name: t(window.lang, 'navToRanking') },
+];
+
 
   const actions = type === 'momocord' ? momoCordActions : ragnaBoardsActions
 
