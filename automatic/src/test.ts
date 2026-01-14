@@ -17,7 +17,7 @@ export function sleep(timeout: number) {
     });
 }
 
-const PROFILE_PATH = path.resolve(process.cwd(),'./Profile\ 2')
+const PROFILE_PATH = path.resolve(process.cwd(), './Profile\ 2')
 
 class RequestSubscriber {
     page: Page
@@ -105,12 +105,14 @@ async function main() {
     const browser = await puppeteer.launch({
         headless: true,
         // headless: false,
-        executablePath: '/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome',
+        // executablePath: '/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome',
+        executablePath: '/usr/bin/google-chrome',
         args: [
             `--user-data-dir=${PROFILE_PATH}`,
             '--disable-web-security',
             '--disable-features=IsolateOrigins',
             '--disable-site-isolation-trials',
+            '--no-sandbox'
         ]
     })
 
@@ -208,13 +210,13 @@ async function main() {
 
         if (res.data.code === '000000') {
 
-            console.log('发送数据',sendData)
+            console.log('发送数据', sendData)
 
             news_smallest_ts = sendData.reduce((prev: any, curr: any) => {
                 return Math.min(prev, curr.utc)
             }, sendData[0].utc)
-        }else{
-            console.log('可能是未登录',res.data)
+        } else {
+            console.log('可能是未登录', res.data)
             // 识别出来给我发一个邮件
         }
     })
@@ -237,7 +239,7 @@ async function main() {
 
     console.log('本次启动数据库最新时间', ts)
 
-    
+
 
     while (!news_smallest_ts || ts < news_smallest_ts) {
         console.log(`滚动, 抓取的数据最早ts:${news_smallest_ts},本次启动数据库最新时间:${ts}`)
