@@ -229,7 +229,7 @@ async function main() {
 
     console.log('打开页面')
 
-    await page.waitForNetworkIdle({ timeout: 1000 })
+    await page.waitForNetworkIdle()
 
     console.log('等待加载完成')
 
