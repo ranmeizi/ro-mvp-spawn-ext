@@ -233,7 +233,7 @@ async function main() {
 
     console.log('等待加载完成')
 
-    await page.waitForSelector('div [data-jump-section="global"]', { timeout: 60000 })
+    // await page.waitForSelector('div [data-jump-section="global"]', { timeout: 60000 })
 
     await sleep(2000)
 
