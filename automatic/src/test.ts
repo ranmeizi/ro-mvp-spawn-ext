@@ -233,6 +233,15 @@ async function main() {
 
     console.log('等待加载完成')
 
+    await page.screenshot({
+        path: 'screenshot-full.png',
+        fullPage: false,  // false: 当前视口，true: 完整页面
+        type: 'png',      // png 或 jpeg
+        quality: 100      // jpeg 质量，1-100
+    });
+
+    console.log('看一眼啥样')
+
     // await page.waitForSelector('div [data-jump-section="global"]', { timeout: 60000 })
 
     await sleep(2000)
