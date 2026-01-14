@@ -112,7 +112,8 @@ async function main() {
             '--disable-web-security',
             '--disable-features=IsolateOrigins',
             '--disable-site-isolation-trials',
-            '--no-sandbox'
+            '--no-sandbox',
+            '--proxy-server= 127.0.0.1:7890'
         ]
     })
 
