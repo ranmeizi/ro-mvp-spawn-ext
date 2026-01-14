@@ -113,7 +113,7 @@ async function main() {
             '--disable-features=IsolateOrigins',
             '--disable-site-isolation-trials',
             '--no-sandbox',
-            '--proxy-server= 127.0.0.1:7890'
+            '--proxy-server=http://127.0.0.1:7890'
         ]
     })
 
@@ -227,7 +227,13 @@ async function main() {
     await page.goto('https://discord.com/channels/1188424174012731432/1353165010582638713');
     // ... 
 
-    await page.waitForSelector('div [data-jump-section="global"]', { timeout: 15000 })
+    console.log('打开页面')
+
+    await page.waitForNetworkIdle({ timeout: 1000 })
+
+    console.log('等待加载完成')
+
+    await page.waitForSelector('div [data-jump-section="global"]', { timeout: 60000 })
 
     await sleep(2000)
 
