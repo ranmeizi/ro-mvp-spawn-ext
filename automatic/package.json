@@ -6,12 +6,14 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "ts-node src/index.ts"
+    "dev": "ts-node src/index.ts",
+    "test": "ts-node src/test.ts"
   },
   "dependencies": {
     "axios": "^1.13.2",
     "behavior3js": "^0.2.2",
     "dayjs": "^1.11.19",
+    "puppeteer": "^24.35.0",
     "puppeteer-core": "^24.32.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"

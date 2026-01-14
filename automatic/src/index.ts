@@ -132,7 +132,7 @@ async function main() {
         await page.goto('https://discord.com/channels/1188424174012731432/1353165010582638713');
         // ... 
         // 等待 list dom 出现
-        const listEl = await untilDomExist(page, { selector: '.scroller__36d07 .scrollerInner__36d07' })
+        const listEl = await untilDomExist(page, { selector: `main [data-jump-section='global']`, timeout: 15000 })
 
         await sleep(2000)
 
@@ -140,7 +140,11 @@ async function main() {
         const subscriber = new RequestSubscriber(page)
 
         subscriber.on('https://discord.com/api/v9/channels/1353165010582638713/messages', async (response: any) => {
-            const data = await getBodyJson(response)
+            let data = await getBodyJson(response)
+
+            if(!Array.isArray(data)){
+                return
+            }
 
             const msgs = data.map((item: any) => {
                 const typeMatch = item.content.match(checkReg)?.[1]
@@ -216,11 +220,11 @@ async function main() {
             })
             // @ts-ignore
             const sendData = msgs.filter(item => item.note).map(item => item.note) as MomoDiscordMsg[]
-
+            console.log('发送数据',sendData)
             const res = await axios.post('https://boboan.net/api/momoro/ingamenews/push', sendData)
 
             if (res.data.code === '000000') {
-       
+
                 news_smallest_ts = sendData.reduce((prev: any, curr: any) => {
                     return Math.min(prev, curr.utc)
                 }, sendData[0].utc)
@@ -235,13 +239,13 @@ async function main() {
         let news_smallest_ts = undefined
 
         while (!news_smallest_ts || ts < news_smallest_ts) {
-            await scrollElementUntilExpectResponse(page, '.scroller__36d07')
+            await scrollElementUntilExpectResponse(page, `div [data-jump-section='global']`)
         }
 
 
 
 
-        await page.close()
+        // await page.close()
         console.log('数据抓取完毕')
         process.exit(0)
 
