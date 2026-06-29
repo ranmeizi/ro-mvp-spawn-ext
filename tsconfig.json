@@ -12,6 +12,9 @@
     "paths": {
       "@/*": [
         "src/*"
+      ],
+      "@sub/*": [
+        "src/_submods/*"
       ]
     },
     "baseUrl": "."

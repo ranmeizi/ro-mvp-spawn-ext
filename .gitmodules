@@ -1,0 +1,3 @@
+[submodule "src/_submods/mvp-conf"]
+	path = src/_submods/mvp-conf
+	url = https://github.com/ranmeizi/mvp-conf.git

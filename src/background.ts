@@ -1,4 +1,4 @@
-import MvpConfig, { EnumMvpIndex, type MvpDeathNote } from '@/datas/mvp'
+import MvpConfig, { EnumMvpIndex, type MvpDeathNote } from '@sub/mvp-conf/mvp'
 import { getMvpDeathNote } from "@/services/momoro"
 import { getMvpState, getSubscribes } from './utils/contents/renderMvpTarget'
 

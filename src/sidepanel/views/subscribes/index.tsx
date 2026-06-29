@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { getRewardRank } from "@/services/momoro";
 import { getSubscribes } from "@/utils/contents/renderMvpTarget";
-import MvpConfig from '@/datas/mvp'
+import MvpConfig from '@sub/mvp-conf/mvp'
 import { useI18n } from "@/locales";
 
 

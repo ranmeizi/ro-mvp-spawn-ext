@@ -4,9 +4,9 @@
  * 可变的是 实时拉取的 mvp death note
  */
 
-import type { MvpDeathNote } from "@/datas/mvp";
-import MvpConfig, { EnumMvpIndex } from '@/datas/mvp'
-import { tileEls } from "./getMapTile";
+import type { MvpDeathNote } from "@sub/mvp-conf/mvp";
+import MvpConfig, { EnumMvpIndex } from '@sub/mvp-conf/mvp'
+import { tileEls } from "./getMapTile"; 
 import duration from 'dayjs/plugin/duration'
 import utc from 'dayjs/plugin/utc';
 import dayjs from "dayjs";

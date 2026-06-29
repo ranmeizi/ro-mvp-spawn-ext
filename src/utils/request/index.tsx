@@ -1,8 +1,5 @@
 import axios from "axios";
-
-const isDev = process.env.NODE_ENV === "development";
-
-
+import { beforeRequest } from "@/utils/sign";
 
 const instance = axios.create({
   // baseURL: isDev ? "http://localhost:3000" : "https://boboan.net/api", // 根据实际情况修改
@@ -13,12 +10,9 @@ const instance = axios.create({
   },
 });
 
-// 请求拦截器
+// 请求拦截器：添加接口签名
 instance.interceptors.request.use(
-  (config) => {
-    // 可在此添加 token 等
-    return config;
-  },
+  (config) => beforeRequest(config),
   (error) => Promise.reject(error)
 );
 
